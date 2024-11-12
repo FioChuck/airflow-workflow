@@ -64,12 +64,15 @@ with DAG(
         }
     ),
 
-    python_task = PythonOperator(
-        task_id='generate_figlet',
-        python_callable=generate_figlet_text,
-    )
+    # python_task = PythonOperator(
+    #     task_id='generate_figlet',
+    #     python_callable=generate_figlet_text,
+    # )
+
+    # python_task >> ctas_query
 
     python_task >> ctas_query
+
 
 if __name__ == "__main__":
     dag.cli()

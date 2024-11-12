@@ -1,0 +1,2 @@
+/composer/airflow-development/*
+!/composer/airflow-development/requirements.txt
