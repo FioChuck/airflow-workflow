@@ -1,0 +1,4 @@
+pytest
+apache-airflow==2.9.3
+apache-airflow-providers-google
+pyfiglet

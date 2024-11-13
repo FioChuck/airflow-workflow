@@ -1,2 +1,5 @@
-/composer/airflow-development/*
-!/composer/airflow-development/requirements.txt
+/composer/local-cc-dev/*
+!/composer/local-cc-dev/requirements.txt
+.pytest_cache
+**/__pycache__/
+.vscode

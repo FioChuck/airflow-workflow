@@ -38,14 +38,12 @@ query = f"""
     ORDER BY current_dt DESC;
 """
 
-
 # def generate_figlet_text():
 #     f = Figlet(font='slant')
 #     print("\n" + f.renderText('HELLO DR. HALEY'))
 
-
 with DAG(
-    dag_id='bq_elt',
+    dag_id='bq_example',
     default_args=args,
     schedule_interval=None,
     start_date=days_ago(1),
@@ -71,7 +69,7 @@ with DAG(
 
     # python_task >> ctas_query
 
-    python_task >> ctas_query
+    ctas_query
 
 
 if __name__ == "__main__":
