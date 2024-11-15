@@ -21,5 +21,8 @@ jobs:
       - name: Install dependencies
         run: pip install -r tests/requirements-test.txt
 
+      - name: Init airflow db
+        run: airflow db init
+
       - name: Test DAG integrity
         run: pytest
