@@ -1,7 +1,8 @@
 import pytest
 import os
 from airflow.models import DagBag
-from airflow.utils.dag_cycle_tester import test_cycle as dag_test_cycle
+# from airflow.utils.dag_cycle_tester import test_cycle as dag_test_cycle
+from airflow.utils.dag_cycle_tester import check_cycle
 
 
 @pytest.fixture()
@@ -20,4 +21,4 @@ def test_dag_loaded(dagbag):
 
 def test_dag_cycles(dagbag):
     for dag in dagbag.dags.values():
-        dag_test_cycle(dag)
+        check_cycle(dag)

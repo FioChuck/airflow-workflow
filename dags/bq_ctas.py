@@ -5,9 +5,7 @@ from airflow.operators.python import PythonOperator
 from pyfiglet import Figlet
 
 
-args = {
-    'owner': 'packt-developer',
-}
+args = {"owner": "packt-developer"}
 
 query = f"""
     CREATE OR REPLACE TABLE
@@ -38,36 +36,20 @@ query = f"""
     ORDER BY current_dt DESC;
 """
 
-# def generate_figlet_text():
-#     f = Figlet(font='slant')
-#     print("\n" + f.renderText('HELLO DR. HALEY'))
-
 with DAG(
-    dag_id='bq_example',
+    dag_id="bq_ctas",
     default_args=args,
     schedule_interval=None,
     start_date=days_ago(1),
     max_active_runs=1,
-    is_paused_upon_creation=False
-
+    is_paused_upon_creation=False,
+    tags=["gcp demo"],
 ) as dag:
 
     ctas_query = BigQueryInsertJobOperator(
         task_id="aggregation_query",
-        configuration={
-            "query": {
-                "query": query,
-                "useLegacySql": False
-            }
-        }
-    ),
-
-    # python_task = PythonOperator(
-    #     task_id='generate_figlet',
-    #     python_callable=generate_figlet_text,
-    # )
-
-    # python_task >> ctas_query
+        configuration={"query": {"query": query, "useLegacySql": False}},
+    )
 
     ctas_query
 
