@@ -7,6 +7,11 @@ on:
 
 jobs:
   unit_test:
+     # Add "id-token" with the intended permissions.
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+      
     name: DAG integrity tests
     runs-on: ubuntu-latest
     steps:
