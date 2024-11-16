@@ -44,4 +44,6 @@ jobs:
         with:
           project_id: 'cf-data-analytics'
           workload_identity_provider: 'projects/1089470781238/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+          service_account: 'github-deployer@cf-data-analytics.iam.gserviceaccount.com'
+
   
