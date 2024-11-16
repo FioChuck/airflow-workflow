@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  dag_integrity_test:
+  unit_test:
     name: DAG integrity tests
     runs-on: ubuntu-latest
     steps:
@@ -18,11 +18,26 @@ jobs:
           python-version: 3.11.10
           architecture: x64
 
-      - name: Install dependencies
+      - name: Install test dependencies
         run: pip install -r tests/requirements-test.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
       - name: Init airflow db
         run: airflow db init
 
       - name: Test DAG integrity
         run: pytest
+
+  deployment:
+    name: DAG integrity tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: 'actions/checkout@v4'
+  
+      - uses: 'google-github-actions/auth@v2'
+        with:
+          project_id: 'cf-data-analytics'
+          workload_identity_provider: 'projects/1089470781238/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+  
