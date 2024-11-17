@@ -7,8 +7,7 @@ on:
 
 jobs:
   unit_test:
-
-    name: DAG integrity tests
+    name: DAG Integrity Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -40,10 +39,14 @@ jobs:
     steps:
       - uses: 'actions/checkout@v4'
   
-      - uses: 'google-github-actions/auth@v2'
+      - name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v2'
         with:
-          project_id: 'cf-data-analytics'
           workload_identity_provider: 'projects/1089470781238/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
           service_account: 'github-deployer@cf-data-analytics.iam.gserviceaccount.com'
-
   
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v2'
+  
+      - name: 'Use gcloud CLI'
+        run: gcloud help
