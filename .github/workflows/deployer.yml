@@ -34,7 +34,7 @@ jobs:
     permissions:
       contents: 'read'
       id-token: 'write'
-    name: DAG integrity tests
+    name: Deploy Composer
     runs-on: ubuntu-latest
     steps:
       - uses: 'actions/checkout@v4'
