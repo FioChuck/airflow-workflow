@@ -48,4 +48,4 @@ jobs:
         uses: 'google-github-actions/setup-gcloud@v2'
 
       - name: 'Use gcloud CLI'
-        run: gcloud storage cp "dags/bq_ctas.py" "gs://cf-cloud-composer-dags/dags/bq_ctas.py"
+        run: gcloud storage cp "dags/*.py" "gs://cf-cloud-composer-dags/dags/"
