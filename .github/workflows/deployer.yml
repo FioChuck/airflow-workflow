@@ -41,8 +41,8 @@ jobs:
         uses: 'google-github-actions/auth@v2'
         with:
           create_credentials_file: true
-          workload_identity_provider: 'projects/1089470781238/locations/global/workloadIdentityPools/git-actions-pool/providers/git-actions-provider'
-          service_account: 'github-identity@cf-data-analytics.iam.gserviceaccount.com'
+          workload_identity_provider: ${{secrets.IDENTITY_PROVIDER}}
+          service_account: ${{secrets.SA}}
   
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v2'
