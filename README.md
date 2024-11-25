@@ -64,21 +64,55 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
 
 2.  **Install Required Tools:**
 
-    - Install `pyenv` and `pyenv-virtualenv` using Homebrew.
+    - Install [pyenv](https://github.com/pyenv/pyenv-virtualenv) and [pyenv-virtualenv](https://github.com/pyenv/pyenv-virtualenv) using [Homebrew](https://docs.brew.sh/Homebrew-on-Linux).
     - Create two Python virtual environments:
-      - Python 3.11.10 for installing `composer-dev`.
-      - Python 3.10.9 for Airflow development and unit testing.
+      1. Python 3.11.10 for installing `composer-dev`.
+      2. Python 3.10.9 for Airflow development and unit testing.
+    - List existing virtual environments:
+
+    ```bash
+    pyenv virtualenvs
+    ```
+
+    - List existing virtual environments:
+
+    ```bash
+    pyenv virtualenv 3.11.10 install_env
+    ```
+
+    - Activate virtual environment:
+
+    ```bash
+    pyenv activate install_env
+    ```
 
 3.  **Install `composer-dev`:**
 
-    - Clone this repository.
-    - Navigate to the `composer-dev` directory.
-    - Run `pip install .` to install the CLI tool.
+    - Clone the `composer-dev` repository:
+
+    ```bash
+    git clone https://github.com/GoogleCloudPlatform/composer-local-dev.git`
+    ```
+
+    - Navigate to the `projects/composer-dev` directory.
+    - Install the CLI tool:
+
+    ```bash
+    pip install .
+    ```
 
 4.  **Create a Local Composer Environment:**
 
     - Navigate to the `projects/airflow-workflow` directory.
-    - Run `composer-dev create --from-image-version composer-2.9.6-airflow-2.9.3 --dags-path ./dags local-cc-dev` to create a local Composer environment.
+    - Instrument Docer error workaround found [here](https://github.com/GoogleCloudPlatform/composer-local-dev/issues/61)
+    - Run:
+
+    ```bash
+    composer-dev create \
+    --from-image-version composer-2.9.6-airflow-2.9.3 \
+    --dags-path ./dags \
+    local-cc-dev
+    ```
 
 5.  **Start the Container:**
 
