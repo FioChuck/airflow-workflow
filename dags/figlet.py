@@ -11,10 +11,8 @@ def generate_figlet_text():
 
 with DAG(
     dag_id="figlet_dag",
-    schedule_interval=None,
-    start_date=days_ago(1),
-    catchup=False,
-    tags=["gcp demo"],  
+    schedule=None,
+    tags=["gcp demo"],
 ) as dag:
 
     python_task = PythonOperator(

@@ -2,7 +2,6 @@ from airflow import DAG
 from airflow.utils.dates import days_ago
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
 from airflow.operators.python import PythonOperator
-from pyfiglet import Figlet
 
 
 args = {"owner": "packt-developer"}
@@ -39,8 +38,7 @@ query = f"""
 with DAG(
     dag_id="bq_ctas",
     default_args=args,
-    schedule_interval=None,
-    start_date=days_ago(1),
+    schedule=None,
     max_active_runs=1,
     is_paused_upon_creation=False,
     tags=["gcp demo"],
