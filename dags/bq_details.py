@@ -39,3 +39,4 @@ with DAG(
 
 if __name__ == "__main__":
     dag.cli()
+    # dag.test()
