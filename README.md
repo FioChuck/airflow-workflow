@@ -157,6 +157,12 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
     pyenv activate test_env
     ```
 
+    - Install libsqlite3-dev. This is a known build problem with Pyenv outlined [here](https://github.com/pyenv/pyenv/wiki/Common-build-problems). The problem is documented in issue #678 found [here](https://github.com/pyenv/pyenv/issues/678).
+
+    ```bash
+    sudo apt install libsqlite3-dev
+    ```
+
     - Install the requirements and test requirements files using [-r flags](https://pip.pypa.io/en/stable/user_guide/#requirements-files):
 
     ```bash
@@ -172,5 +178,16 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
 
 9.  **CI/CD with Git Actions:**
 
-    - Configure a Git Actions workflow to automate testing and deployment.
-    - Refer to the CI/CD best practices in the Google Cloud documentation.
+    - The Git Actions in the workflow found in `/.github/workflows/deployer.yaml` rely on the following action secrets:
+
+      - **IDENTITY_PROVIDER:** Workload identity provider used for [identity federation](https://cloud.google.com/iam/docs/workload-identity-federation). Identify federation is instrumented using the [google-github-actions/auth](https://github.com/google-github-actions/auth) action. The action documentation has instructions for setting up an identity pool and provider.
+
+        This value typically takes the form `projects/{project number}/locations/global/workloadIdentityPools/{workload-identity-pool}/providers/{workload-identity-provider}`.
+
+        You can print the value required for this secret using gcloud iam [gcloud iam workload-identity-pools describe](https://cloud.google.com/sdk/gcloud/reference/iam/workload-identity-pools/describe).
+
+        More information on keyless authentication with Git Actions [here](https://cloud.google.com/blog/products/identity-security/enabling-keyless-authentication-from-github-actions?e=48754805).
+
+      - **SA:** Service account impersonated by identity provider.
+
+    - Refer to the CI/CD best practices in the Google Cloud documentation found [here](https://cloud.google.com/composer/docs/dag-cicd-integration-guide).
