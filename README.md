@@ -1,10 +1,10 @@
-# Airflow Workflow with Cloud Composer
+# Airflow + Cloud Composer Workflow
 
-This repository demonstrates an end-to-end Airflow workflow, from local development to automated deployment using Cloud Composer and Cloud Workstations. It highlights best practices for dependency management, unit testing, and CI/CD integration.
+This repository demonstrates an end-to-end Airflow workflow, from local development to automated deployment using Cloud Composer and Cloud Workstations on Google Cloud. It highlights best practices for dependency management, unit testing, and CI/CD integration.
 
 ## Summary
 
-This outline covers the following:
+This repo covers the following:
 
 - **Cloud Workstations:** Introduction to [Cloud Workstations](https://cloud.google.com/workstations/?e=48754805&hl=en) as an ephemeral development environment for [Airflow](https://airflow.apache.org/).
 - **Local Development:** Developing Airflow DAGs locally with the [composer-dev](https://github.com/GoogleCloudPlatform/composer-local-dev) CLI tool.
@@ -16,7 +16,7 @@ This outline covers the following:
 
 Developing and deploying Airflow workflows presents several challenges:
 
-- **Dependency Management:** Airflow, Python, PyPI packages, and Cloud Composer images have intricate dependencies that can be difficult to manage.
+- **Dependency Management:** Airflow, Python, PyPI packages, and Cloud Composer images have intricate dependencies that can be difficult to manage. For example, Airflow 2.3.0 dropped support for [Python 3.6](https://github.com/apache/airflow/pull/20467).
 - **Environment Parity:** Ensuring consistency between local development and Cloud Composer environments.
 - **Testing:** Effectively testing DAGs for functionality and potential issues.
 - **CI/CD Integration:** Automating testing and deployment to streamline the workflow.
@@ -64,23 +64,26 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
 
 2.  **Install Required Tools:**
 
-    - Install [pyenv](https://github.com/pyenv/pyenv-virtualenv) and [pyenv-virtualenv](https://github.com/pyenv/pyenv-virtualenv) using [Homebrew](https://docs.brew.sh/Homebrew-on-Linux).
+    - Install [pyenv](https://github.com/pyenv/pyenv-virtualenv) and [pyenv-virtualenv](https://github.com/pyenv/pyenv-virtualenv) using [Homebrew](https://docs.brew.sh/Homebrew-on-Linux). These tools will be used to run isolated Python environments.
     - Create two Python virtual environments:
-      1. Python 3.11.10 for installing `composer-dev`.
-      2. Python 3.10.9 for Airflow development and unit testing.
+
+      1. Python 3.11.10 for installing `composer-dev`. The [documentation](https://cloud.google.com/composer/docs/concepts/versioning/composer-versions#images-composer-2) states Python 3.8 through 3.11 is required.
+      2. Python 3.10.9 for Airflow development and unit testing. I this example I used the [composer-2.9.6-airflow-2.9.3] composer image with Python 3.11.9 released on 10/8/2024.
+
     - List existing virtual environments:
 
     ```bash
     pyenv virtualenvs
     ```
 
-    - List existing virtual environments:
+    - Create a new virtual environments for CLI install and unit testing. Python version must already be installed using pyenv:
 
     ```bash
     pyenv virtualenv 3.11.10 install_env
+    pyenv virtualenv 3.11.9 test_env
     ```
 
-    - Activate virtual environment:
+    - Activate install virtual environment to setup `composer-dev` cli tool:
 
     ```bash
     pyenv activate install_env
@@ -95,7 +98,7 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
     ```
 
     - Navigate to the `projects/composer-dev` directory.
-    - Install the CLI tool:
+    - Install the CLI tool using pip:
 
     ```bash
     pip install .
@@ -104,7 +107,7 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
 4.  **Create a Local Composer Environment:**
 
     - Navigate to the `projects/airflow-workflow` directory.
-    - Instrument Docer error workaround found [here](https://github.com/GoogleCloudPlatform/composer-local-dev/issues/61)
+    - Instrument documented issue workaround found [here](https://github.com/GoogleCloudPlatform/composer-local-dev/issues/61)
     - Run:
 
     ```bash
@@ -116,15 +119,28 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
 
 5.  **Start the Container:**
 
-    - Run `composer-dev start local-cc-dev` to start the container.
+    - Start the Composer container:
+
+    ```bash
+    composer-dev start local-cc-dev
+    ```
+
+    - Verify container is running:
+
+    ```bash
+    docker ps
+    ```
 
 6.  **Access the Airflow UI:**
 
-    - Open a web browser and go to `http://localhost:8080` to access the Airflow UI.
+    - Open a web browser and go to [http://localhost:8080](http://localhost:8080) to access the Airflow UI.
 
 7.  **Explore the DAGs:**
 
-    - Review the provided DAG examples (`bq_details`, `figlet`, `bq_ctas`).
+    - Review the provided DAG examples:
+      - bq_details
+      - figlet
+      - bq_ctas
 
 8.  **Unit Testing:**
 
