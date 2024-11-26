@@ -7,7 +7,7 @@ This repository demonstrates an end-to-end Airflow workflow, from local developm
 This repo covers the following:
 
 - **Cloud Workstations:** Introduction to [Cloud Workstations](https://cloud.google.com/workstations/?e=48754805&hl=en) as an ephemeral development environment for [Airflow](https://airflow.apache.org/).
-- **Local Development:** Developing Airflow DAGs locally with the [composer-dev](https://github.com/GoogleCloudPlatform/composer-local-dev) CLI tool.
+- **Local Development:** Developing Airflow DAGs locally with the [composer-dev](https://github.com/GoogleCloudPlatform/composer-local-dev) CLI tool. The steps outlined in this repo are similar/extension of the official docs found [here](https://cloud.google.com/composer/docs/composer-2/run-local-airflow-environments).
 - **Unit Testing:** Implementing unit tests for Airflow DAGs using [Pytest](https://docs.pytest.org/en/stable/).
 - **CI/CD:** Automating the deployment process with [Git Actions](https://docs.github.com/en/actions/about-github-actions/understanding-github-actions) and [gcloud](https://cloud.google.com/sdk/gcloud).
 - **Code Assist:** Leveraging [Gemini Code Assit](https://cloud.google.com/products/gemini/code-assist?e=48754805&hl=en) within the development environment.
@@ -68,7 +68,7 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
     - Create two Python virtual environments:
 
       1. Python 3.11.10 for installing `composer-dev`. The [documentation](https://cloud.google.com/composer/docs/concepts/versioning/composer-versions#images-composer-2) states Python 3.8 through 3.11 is required.
-      2. Python 3.11.9 for Airflow development and unit testing. I this example I used the [composer-2.9.6-airflow-2.9.3] composer image with Python 3.11.9 released on 10/8/2024.
+      2. Python 3.11.9 for Airflow development and unit testing. I this example I used the _[composer-2.9.6-airflow-2.9.3]_ composer image with Python 3.11.9 released on 10/8/2024. Complete list of images found [here](https://cloud.google.com/composer/docs/concepts/versioning/composer-versions#images-composer-2).
 
     - List existing virtual environments:
 
@@ -107,8 +107,15 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
 4.  **Create a Local Composer Environment:**
 
     - Navigate to the `projects/airflow-workflow` directory.
-    - Instrument the workaround for the issue found [here](https://github.com/GoogleCloudPlatform/composer-local-dev/issues/61)
-    - Run:
+    - Instrument the workaround for the issue found [here](https://github.com/GoogleCloudPlatform/composer-local-dev/issues/61).
+    - List available images:
+
+    ```bash
+    composer-dev list-available-versions --include-past-releases --limit 10
+
+    ```
+
+    - Download image and setup file structure:
 
     ```bash
     composer-dev create \
@@ -119,13 +126,13 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
 
 5.  **Start the Container:**
 
-    - Start the Composer container:
+    - Start the local Composer container:
 
     ```bash
     composer-dev start local-cc-dev
     ```
 
-    - Verify container is running:
+    - Verify the Docker container is [running](https://docs.docker.com/reference/cli/docker/container/ls/):
 
     ```bash
     docker ps
@@ -139,27 +146,28 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
 
     - Review the provided DAG examples:
       - **bq_details:**: Retrieves the dataset market_data and then lists all tables within that dataset, printing their names to the console.
-      - **figlet:** This DAG uses the pyfiglet library to print text in slant font to the console.
-      - **bq_ctas:** Executes a BigQuery query to create or replace a table named googl_daily_bar with aggregated daily market data for Google (GOOGL) including symbol, date, and closing price.
+      - **figlet:** Uses the pyfiglet library to print text in slant font to the console.
+      - **bq_ctas:** Executes a BigQuery query to create or replace a table named googl*daily_bar with aggregated daily market data for Google *(GOOGL)\_ including symbol, date, and closing price.
 
 8.  **Unit Testing:**
 
-    - Activate the `test_env` virtual environment:
+    - Activate the `test_env` Python virtual environment:
 
     ```bash
     pyenv activate test_env
     ```
 
-    - Install the requirements and test requirements:
+    - Install the requirements and test requirements files using [-r flags](https://pip.pypa.io/en/stable/user_guide/#requirements-files):
 
     ```bash
+    pip install -r composer/
     pip install -r tests/
     ```
 
-    - Run the tests cases:
+    - Run the tests cases with [verbose flag enabled](https://docs.pytest.org/en/stable/reference/reference.html#command-line-flags):
 
     ```bash
-    pytest -s
+    pytest -v
     ```
 
 9.  **CI/CD with Git Actions:**
