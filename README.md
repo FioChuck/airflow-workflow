@@ -6,10 +6,10 @@ This repository demonstrates an end-to-end Airflow workflow, from local developm
 
 This outline covers the following:
 
-- **Cloud Workstations:** Introduction to [Cloud Workstations](https://cloud.google.com/workstations/?e=48754805&hl=en) as an ephemeral development environment for Airflow.
+- **Cloud Workstations:** Introduction to [Cloud Workstations](https://cloud.google.com/workstations/?e=48754805&hl=en) as an ephemeral development environment for [Airflow](https://airflow.apache.org/).
 - **Local Development:** Developing Airflow DAGs locally with the [composer-dev](https://github.com/GoogleCloudPlatform/composer-local-dev) CLI tool.
 - **Unit Testing:** Implementing unit tests for Airflow DAGs using [Pytest](https://docs.pytest.org/en/stable/).
-- **CI/CD:** Automating the deployment process with [Git Actions](https://docs.github.com/en/actions/about-github-actions/understanding-github-actions).
+- **CI/CD:** Automating the deployment process with [Git Actions](https://docs.github.com/en/actions/about-github-actions/understanding-github-actions) and [gcloud](https://cloud.google.com/sdk/gcloud).
 - **Code Assist:** Leveraging [Gemini Code Assit](https://cloud.google.com/products/gemini/code-assist?e=48754805&hl=en) within the development environment.
 
 ## Development Challenges
@@ -59,8 +59,8 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
 
 1.  **Set up Cloud Workstations:**
 
-    - Create a Cloud Workstation instance within your VPC.
-    - Connect to the workstation using SSH or the web-based IDE.
+    - Create a Cloud Workstation instance within your VPC. This makes debugging connections to other GCP services like databaes simple.
+    - Connect to the workstation using [SSH](https://cloud.google.com/workstations/docs/develop-code-using-local-vscode-editor) or the web-based IDE.
 
 2.  **Install Required Tools:**
 
