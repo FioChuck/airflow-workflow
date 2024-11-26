@@ -52,4 +52,4 @@ jobs:
         run: gcloud storage cp "dags/*.py" "gs://cf-cloud-composer-dags/dags/"
 
       - name: "Update composer dependencies"
-        run: gcloud composer environments update etl-orchestration --location us-central1 --update-pypi-packages-from-file composer/local-cc-dev/requirements.txt
+        run: gcloud composer environments update etl-orchestration --location us-central1 --update-pypi-packages-from-file composer/local-cc-dev/requirements.txt | (grep -v 'No change in configuration. Must specify a change to configuration.software_configuration.pypi_dependencies' || true)
