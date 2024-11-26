@@ -59,7 +59,7 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
 
 1.  **Set up Cloud Workstations:**
 
-    - Create a Cloud Workstation instance within your VPC. This makes debugging connections to other GCP services like databaes simple.
+    - Create a Cloud Workstation instance within your VPC. This makes debugging connections to other GCP services like databases simple.
     - Connect to the workstation using [SSH](https://cloud.google.com/workstations/docs/develop-code-using-local-vscode-editor) or the web-based IDE.
 
 2.  **Install Required Tools:**
@@ -68,7 +68,7 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
     - Create two Python virtual environments:
 
       1. Python 3.11.10 for installing `composer-dev`. The [documentation](https://cloud.google.com/composer/docs/concepts/versioning/composer-versions#images-composer-2) states Python 3.8 through 3.11 is required.
-      2. Python 3.10.9 for Airflow development and unit testing. I this example I used the [composer-2.9.6-airflow-2.9.3] composer image with Python 3.11.9 released on 10/8/2024.
+      2. Python 3.11.9 for Airflow development and unit testing. I this example I used the [composer-2.9.6-airflow-2.9.3] composer image with Python 3.11.9 released on 10/8/2024.
 
     - List existing virtual environments:
 
@@ -107,7 +107,7 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
 4.  **Create a Local Composer Environment:**
 
     - Navigate to the `projects/airflow-workflow` directory.
-    - Instrument documented issue workaround found [here](https://github.com/GoogleCloudPlatform/composer-local-dev/issues/61)
+    - Instrument the workaround for the issue found [here](https://github.com/GoogleCloudPlatform/composer-local-dev/issues/61)
     - Run:
 
     ```bash
@@ -138,30 +138,31 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
 7.  **Explore the DAGs:**
 
     - Review the provided DAG examples:
-      - bq_details
-      - figlet
-      - bq_ctas
+      - **bq_details:**: Retrieves the dataset market_data and then lists all tables within that dataset, printing their names to the console.
+      - **figlet:** This DAG uses the pyfiglet library to print text in slant font to the console.
+      - **bq_ctas:** Executes a BigQuery query to create or replace a table named googl_daily_bar with aggregated daily market data for Google (GOOGL) including symbol, date, and closing price.
 
 8.  **Unit Testing:**
 
-    - Activate the `pytest_env` virtual environment.
-    - Install the test requirements: `pip install -r tests/requirements-test.txt`.
-    - Run the tests: `pytest -s`.
+    - Activate the `test_env` virtual environment:
+
+    ```bash
+    pyenv activate test_env
+    ```
+
+    - Install the requirements and test requirements:
+
+    ```bash
+    pip install -r tests/
+    ```
+
+    - Run the tests cases:
+
+    ```bash
+    pytest -s
+    ```
 
 9.  **CI/CD with Git Actions:**
 
     - Configure a Git Actions workflow to automate testing and deployment.
     - Refer to the CI/CD best practices in the Google Cloud documentation.
-
-## Open Items
-
-- Known issues when installing Airflow with `pyenv`.
-- Keyless authentication from GitHub Actions.
-
-## Resources
-
-- [Cloud Composer Documentation](https://cloud.google.com/composer)
-- [Cloud Workstations Documentation](https://www.google.com/url?sa=E&source=gmail&q=https://cloud.google.com/workstations)
-- [Airflow Documentation](https://www.google.com/url?sa=E&source=gmail&q=https://airflow.apache.org/)
-- [Pytest Documentation](https://www.google.com/url?sa=E&source=gmail&q=https://docs.pytest.org/)
-- [Git Actions Documentation](https://www.google.com/url?sa=E&source=gmail&q=https://docs.github.com/en/actions)
