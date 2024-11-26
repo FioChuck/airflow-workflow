@@ -8,7 +8,7 @@ This repo covers the following:
 
 - **Cloud Workstations:** Introduction to [Cloud Workstations](https://cloud.google.com/workstations/?e=48754805&hl=en) as an ephemeral development environment for [Airflow](https://airflow.apache.org/).
 - **Local Development:** Developing Airflow DAGs locally with the [composer-dev](https://github.com/GoogleCloudPlatform/composer-local-dev) CLI tool. The steps outlined in this repo are similar/extension of the official docs found [here](https://cloud.google.com/composer/docs/composer-2/run-local-airflow-environments).
-- **Unit Testing:** Implementing unit tests for Airflow DAGs using [Pytest](https://docs.pytest.org/en/stable/).
+- **Unit Testing:** Implementing [unit tests](https://airflow.apache.org/docs/apache-airflow/stable/best-practices.html#unit-tests) for Airflow DAGs using [Pytest](https://docs.pytest.org/en/stable/).
 - **CI/CD:** Automating the deployment process with [Git Actions](https://docs.github.com/en/actions/about-github-actions/understanding-github-actions) and [gcloud](https://cloud.google.com/sdk/gcloud).
 - **Code Assist:** Leveraging [Gemini Code Assit](https://cloud.google.com/products/gemini/code-assist?e=48754805&hl=en) within the development environment.
 
@@ -166,8 +166,8 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
     - Install the requirements and test requirements files using [-r flags](https://pip.pypa.io/en/stable/user_guide/#requirements-files):
 
     ```bash
-    pip install -r composer/
-    pip install -r tests/
+    pip install -r composer/local-cc-dev/requirements.txt
+    pip install -r tests/requirements-test.txt
     ```
 
     - Run the tests cases with [verbose flag enabled](https://docs.pytest.org/en/stable/reference/reference.html#command-line-flags):

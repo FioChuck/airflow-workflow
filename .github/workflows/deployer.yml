@@ -50,3 +50,6 @@ jobs:
 
       - name: "Save DAGs to GCS using gcloud"
         run: gcloud storage cp "dags/*.py" "gs://cf-cloud-composer-dags/dags/"
+
+      - name: "Update composer dependencies"
+        run: gcloud composer environments update etl-orchestration --location us-central1 --update-pypi-packages-from-file composer/local-cc-dev/requirements.txt
