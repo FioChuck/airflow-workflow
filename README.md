@@ -65,6 +65,19 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
 2.  **Install Required Tools:**
 
     - Install [pyenv](https://github.com/pyenv/pyenv-virtualenv) and [pyenv-virtualenv](https://github.com/pyenv/pyenv-virtualenv) using [Homebrew](https://docs.brew.sh/Homebrew-on-Linux). These tools will be used to run isolated Python environments.
+    - Add the following commands to bashrc. They configure the current session to use pyenv.
+
+    ```bash
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+    ```
+
+    - Reload bashrc
+
+    ```bash
+    source ~/.bashrc
+    ```
+
     - Create two Python virtual environments:
 
       1. Python 3.11.10 for installing `composer-dev`. The [documentation](https://cloud.google.com/composer/docs/concepts/versioning/composer-versions#images-composer-2) states Python 3.8 through 3.11 is required.
