@@ -10,9 +10,15 @@ dag = DAG(
 )
 
 
-start_task = BashOperator(
-    task_id="start_task",
-    bash_command='echo "DAG started at $(date +"%T")" && sleep 3600',
+def run_for_one_hour():
+    print(f"DAG started at {datetime.now().strftime('%T')}")
+    time.sleep(600)
+    print(f"DAG finished at {datetime.now().strftime('%T')}")
+
+
+one_hour_task = PythonOperator(
+    task_id="one_hour_task",
+    python_callable=run_for_one_hour,
     dag=dag,
     queue="kubernetes",
 )
@@ -21,7 +27,6 @@ end_task = BashOperator(
     task_id="end_task",
     bash_command='echo "DAG finished at $(date +"%T")"',
     dag=dag,
-    queue="kubernetes",
 )
 
-start_task >> end_task
+one_hour_task >> end_task
