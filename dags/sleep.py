@@ -14,12 +14,14 @@ start_task = BashOperator(
     task_id="start_task",
     bash_command='echo "DAG started at $(date +"%T")" && sleep 3600',
     dag=dag,
+    queue="kubernetes",
 )
 
 end_task = BashOperator(
     task_id="end_task",
     bash_command='echo "DAG finished at $(date +"%T")"',
     dag=dag,
+    queue="kubernetes",
 )
 
 start_task >> end_task
