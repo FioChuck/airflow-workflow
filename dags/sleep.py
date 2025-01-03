@@ -5,8 +5,8 @@ from airflow.operators.python import PythonOperator
 
 
 dag = DAG(
-    "one_hour_dag",
-    description="A DAG that runs for exactly one hour",
+    "ten_minute_dag",
+    description="KubernetesPodOperator Example",
     schedule=None,
 )
 
@@ -28,6 +28,7 @@ end_task = BashOperator(
     task_id="end_task",
     bash_command='echo "DAG finished at $(date +"%T")"',
     dag=dag,
+    queue="kubernetes",
 )
 
 ten_min_task >> end_task
