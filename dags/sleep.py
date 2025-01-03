@@ -7,19 +7,19 @@ from airflow.operators.python import PythonOperator
 dag = DAG(
     "one_hour_dag",
     description="A DAG that runs for exactly one hour",
-    schedule_interval=None,
+    schedule=None,
 )
 
 
-def run_for_one_hour():
+def run_for_ten_min():
     print(f"DAG started at {datetime.now().strftime('%T')}")
     time.sleep(600)
     print(f"DAG finished at {datetime.now().strftime('%T')}")
 
 
-one_hour_task = PythonOperator(
-    task_id="one_hour_task",
-    python_callable=run_for_one_hour,
+ten_min_task = PythonOperator(
+    task_id="ten_min_task",
+    python_callable=run_for_ten_min,
     dag=dag,
     queue="kubernetes",
 )
@@ -30,4 +30,4 @@ end_task = BashOperator(
     dag=dag,
 )
 
-one_hour_task >> end_task
+ten_min_task >> end_task
