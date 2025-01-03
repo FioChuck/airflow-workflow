@@ -1,7 +1,8 @@
 from airflow import DAG
 from airflow.operators.bash import BashOperator
-from datetime import datetime, timedelta
+from datetime import datetime
 from airflow.operators.python import PythonOperator
+import time
 
 
 dag = DAG(
@@ -32,3 +33,7 @@ end_task = BashOperator(
 )
 
 ten_min_task >> end_task
+
+if __name__ == "__main__":
+    dag.cli()
+    # dag.test()
