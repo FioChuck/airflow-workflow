@@ -6,7 +6,7 @@ from pyfiglet import Figlet
 
 def generate_figlet_text():
     f = Figlet(font="slant")
-    print("\n" + f.renderText("HELLO DR. HALEY"))
+    print("\n" + f.renderText("DONT BE EVIL"))
 
 
 with DAG(
@@ -23,4 +23,5 @@ with DAG(
     python_task
 
 if __name__ == "__main__":
-    dag.cli()
+    # dag.cli()
+    dag.test()

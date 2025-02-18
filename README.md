@@ -110,7 +110,7 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
     git clone https://github.com/GoogleCloudPlatform/composer-local-dev.git`
     ```
 
-    - Navigate to the `projects/composer-dev` directory.
+    - Navigate to the `projects/composer-local-dev` directory.
     - Install the CLI tool using pip:
 
     ```bash

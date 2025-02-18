@@ -5,3 +5,5 @@
 .vscode
 .python-version
 identity-federation.sh
+
+/composer/composer-local-dev
