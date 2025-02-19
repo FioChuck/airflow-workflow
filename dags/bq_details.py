@@ -3,7 +3,6 @@ from airflow.providers.google.cloud.operators.bigquery import (
     BigQueryGetDatasetOperator,
     BigQueryGetDatasetTablesOperator,
 )
-from airflow.utils.dates import days_ago
 from airflow.operators.python import PythonOperator
 
 

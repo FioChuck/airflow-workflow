@@ -6,4 +6,6 @@
 .python-version
 identity-federation.sh
 
-/composer/composer-local-dev
+/composer/composer-local-dev/*
+/idea/*
+config
