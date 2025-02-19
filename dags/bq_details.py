@@ -33,9 +33,9 @@ with DAG(
 
     print_tables = PythonOperator(task_id="print_tables", python_callable=print_tables)
 
-    get_dataset >> get_dataset_tables >> print_tables
+    get_dataset >> get_dataset_tables >> print_tables >> get_dataset
 
 
 if __name__ == "__main__":
-    dag.cli()
-    # dag.test()
+    # dag.cli()
+    dag.test()

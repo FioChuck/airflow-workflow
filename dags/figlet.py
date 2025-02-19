@@ -22,5 +22,5 @@ with DAG(
     python_task
 
 if __name__ == "__main__":
-    # dag.cli()
-    dag.test()
+    dag.cli()
+    # dag.test()
