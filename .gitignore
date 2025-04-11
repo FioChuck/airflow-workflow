@@ -9,3 +9,6 @@ identity-federation.sh
 /composer/composer-local-dev/*
 /idea/*
 config
+serverless_demo.py
+node_modules
+
