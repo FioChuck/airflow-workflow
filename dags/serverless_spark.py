@@ -1,4 +1,5 @@
 import uuid
+from airflow.utils.task_group import TaskGroup
 from airflow import models
 from airflow.providers.google.cloud.operators.dataproc import (
     DataprocCreateBatchOperator,
@@ -21,28 +22,46 @@ with models.DAG(
 ) as dag:
     unique_batch_id = "demo-serverless-batch-" + str(uuid.uuid4())
 
-    create_batch = DataprocCreateBatchOperator(
-        task_id="batch_create",
-        batch={
-            "pyspark_batch": {
-                "main_python_file_uri": PYTHON_FILE_LOCATION,
-                "args": ["--gcs_path=" + GCS_DESTINATION],
-            },
-            "environment_config": {
-                "peripherals_config": {
-                    "spark_history_server_config": {},
+    with TaskGroup("taskgroup_1", tooltip="task group #1") as section_1:
+        create_batch_1 = DataprocCreateBatchOperator(
+            task_id="batch_create_1",
+            batch={
+                "pyspark_batch": {
+                    "main_python_file_uri": PYTHON_FILE_LOCATION,
+                    "args": ["--gcs_path=" + GCS_DESTINATION],
+                },
+                "environment_config": {
+                    "peripherals_config": {
+                        "spark_history_server_config": {},
+                    },
                 },
             },
-        },
-        batch_id=unique_batch_id,
-        deferrable=True,
-    )
+            batch_id=unique_batch_id,
+            deferrable=True,
+        )
+
+        create_batch_2 = DataprocCreateBatchOperator(
+            task_id="batch_create_2",
+            batch={
+                "pyspark_batch": {
+                    "main_python_file_uri": PYTHON_FILE_LOCATION,
+                    "args": ["--gcs_path=" + GCS_DESTINATION],
+                },
+                "environment_config": {
+                    "peripherals_config": {
+                        "spark_history_server_config": {},
+                    },
+                },
+            },
+            batch_id=unique_batch_id,
+            deferrable=True,
+        )
 
     list_batches = DataprocListBatchesOperator(
         task_id="list-all-batches",
     )
 
-    create_batch >> list_batches
+section_1 >> list_batches
 
 if __name__ == "__main__":
     dag.cli()
