@@ -18,17 +18,16 @@ default_args = {
     "region": REGION,
 }
 with models.DAG(
-    dag_id="dataproc_serverless_trigger", default_args=default_args, schedule=None
+    dag_id="dataproc_serverless", default_args=default_args, schedule=None
 ) as dag:
-    unique_batch_id = "demo-serverless-batch-" + str(uuid.uuid4())
 
-    with TaskGroup("taskgroup_1", tooltip="task group #1") as section_1:
+    with TaskGroup("example_taskgroup", tooltip="task group #1") as section_1:
         create_batch_1 = DataprocCreateBatchOperator(
-            task_id="batch_create_1",
+            task_id="query_1",
             batch={
                 "pyspark_batch": {
                     "main_python_file_uri": PYTHON_FILE_LOCATION,
-                    "args": ["--gcs_path=" + GCS_DESTINATION],
+                    "args": ["--gcs_path=" + GCS_DESTINATION + "_1"],
                 },
                 "environment_config": {
                     "peripherals_config": {
@@ -36,16 +35,16 @@ with models.DAG(
                     },
                 },
             },
-            batch_id=unique_batch_id,
+            batch_id="demo-serverless-batch-" + str(uuid.uuid4()),
             deferrable=True,
         )
 
         create_batch_2 = DataprocCreateBatchOperator(
-            task_id="batch_create_2",
+            task_id="query_2",
             batch={
                 "pyspark_batch": {
                     "main_python_file_uri": PYTHON_FILE_LOCATION,
-                    "args": ["--gcs_path=" + GCS_DESTINATION],
+                    "args": ["--gcs_path=" + GCS_DESTINATION + "_2"],
                 },
                 "environment_config": {
                     "peripherals_config": {
@@ -53,7 +52,24 @@ with models.DAG(
                     },
                 },
             },
-            batch_id=unique_batch_id,
+            batch_id="demo-serverless-batch-" + str(uuid.uuid4()),
+            deferrable=True,
+        )
+
+        create_batch_3 = DataprocCreateBatchOperator(
+            task_id="query_3",
+            batch={
+                "pyspark_batch": {
+                    "main_python_file_uri": PYTHON_FILE_LOCATION,
+                    "args": ["--gcs_path=" + GCS_DESTINATION + "_3"],
+                },
+                "environment_config": {
+                    "peripherals_config": {
+                        "spark_history_server_config": {},
+                    },
+                },
+            },
+            batch_id="demo-serverless-batch-" + str(uuid.uuid4()),
             deferrable=True,
         )
 
@@ -64,5 +80,5 @@ with models.DAG(
 section_1 >> list_batches
 
 if __name__ == "__main__":
-    dag.cli()
-    # dag.test()
+    # dag.cli()
+    dag.test()

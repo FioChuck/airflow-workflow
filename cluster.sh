@@ -5,7 +5,8 @@ gcloud composer environments create etl-orchestration \
 --environment-size=small \
 --triggerer-count=1 \
 --triggerer-cpu=1 \
---triggerer-memory=1
+--triggerer-memory=1 \
+--storage-bucket=gs://cf-cloud-composer-dags
 
 gcloud composer environments storage dags import \
 --environment=etl-orchestration \
