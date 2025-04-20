@@ -80,5 +80,5 @@ with models.DAG(
 section_1 >> list_batches
 
 if __name__ == "__main__":
-    # dag.cli()
-    dag.test()
+    dag.cli()
+    # dag.test()
