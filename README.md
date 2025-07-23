@@ -64,58 +64,81 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
 
 2.  **Install Required Tools:**
 
-    - Install [pyenv](https://github.com/pyenv/pyenv-virtualenv) and [pyenv-virtualenv](https://github.com/pyenv/pyenv-virtualenv) using [Homebrew](https://docs.brew.sh/Homebrew-on-Linux). These tools will be used to run isolated Python environments.
+    - Install [pyenv](https://github.com/pyenv/pyenv-virtualenv) and [pyenv-virtualenv](https://github.com/pyenv/pyenv-virtualenv) using [Homebrew](https://docs.brew.sh/Homebrew-on-Linux). These tools will be used to run isolated Python environments. For linux machines, install build dependencies using [these instructions](https://github.com/pyenv/pyenv/wiki#suggested-build-environment). Next install pyenv using [these instructions](https://github.com/pyenv/pyenv?tab=readme-ov-file#linuxunix).
+
     - Add the following commands to bashrc. They configure the current session to use pyenv.
 
-    ```bash
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
-    ```
+        ```
+        vim ~/.bashrc
+        ```
 
-    - Reload bashrc
+        ```bash
+        export PYENV_ROOT="$HOME/.pyenv"
+        [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+        eval "$(pyenv init - bash)"
+        # Restart your shell for the changes to take effect.
+        # Load pyenv-virtualenv automatically by adding
+        # the following to ~/.bashrc:
+        eval "$(pyenv virtualenv-init -)"
+        ```
 
-    ```bash
-    source ~/.bashrc
-    ```
+    - Reload bashrc.
+
+        ```bash
+        source ~/.bashrc
+        ```
 
     - Create two Python virtual environments:
 
-      1. Python 3.11.10 for installing `composer-dev`. The [documentation](https://cloud.google.com/composer/docs/concepts/versioning/composer-versions#images-composer-2) states Python 3.8 through 3.11 is required.
-      2. Python 3.11.9 for Airflow development and unit testing. I this example I used the _[composer-2.9.6-airflow-2.9.3]_ composer image with Python 3.11.9 released on 10/8/2024. Complete list of images found [here](https://cloud.google.com/composer/docs/concepts/versioning/composer-versions#images-composer-2).
+      1. Python 3.11.10 for installing `composer-dev`. The [documentation](https://cloud.google.com/composer/docs/composer-2/run-local-airflow-environments#before) currently reccomends Python 3.8 through 3.11.
+      2. Python 3.11.8 for Airflow development and unit testing. In this example, I used the _[composer-3-airflow-2.10.5-build.9]_ composer image with Python 3.11.8 released on 07/09/2025. Complete list of images found [here](https://cloud.google.com/composer/docs/concepts/versioning/composer-versions#images-composer-2).
+
+    - Install Python versions
+
+        List availble versions and install. Revisit the build dependencies steps above if you run into errors.
+
+        ```bash
+        pyenv install --list
+        pyenv install 3.11.10
+        pyenv install 3.11.8
+        ``` 
+
+        List versions:
 
     - List existing virtual environments:
 
-    ```bash
-    pyenv virtualenvs
-    ```
+        ```bash
+        pyenv virtualenvs
+        ```
 
     - Create a new virtual environments for CLI install and unit testing. Python version must already be installed using pyenv:
 
-    ```bash
-    pyenv virtualenv 3.11.10 install_env
-    pyenv virtualenv 3.11.9 test_env
-    ```
+        ```bash
+        pyenv virtualenv 3.11.10 composer_env
+        pyenv virtualenv 3.11.8 test_env
+        ```
 
     - Activate install virtual environment to setup `composer-dev` cli tool:
 
-    ```bash
-    pyenv activate install_env
-    ```
+        ```bash
+        pyenv activate composer_env
+        ```
 
 3.  **Install `composer-dev`:**
 
+    - [Generate a new SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and [add the SSH key to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
     - Clone the `composer-dev` repository:
 
-    ```bash
-    git clone https://github.com/GoogleCloudPlatform/composer-local-dev.git`
-    ```
+        ```bash
+        git clone https://github.com/GoogleCloudPlatform/composer-local-dev.git
+        ```
 
     - Navigate to the `projects/composer-local-dev` directory.
     - Install the CLI tool using pip:
 
-    ```bash
-    pip install .
-    ```
+        ```bash
+        pip install .
+        ```
 
 4.  **Create a Local Composer Environment:**
 
@@ -123,33 +146,32 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
     - Instrument the workaround for the issue found [here](https://github.com/GoogleCloudPlatform/composer-local-dev/issues/61).
     - List available images:
 
-    ```bash
-    composer-dev list-available-versions --include-past-releases --limit 10
-
-    ```
+        ```bash
+        composer-dev list-available-versions --include-past-releases --limit 10
+        ```
 
     - Download image and setup file structure:
 
-    ```bash
-    composer-dev create \
-    --from-image-version composer-2.9.6-airflow-2.9.3 \
-    --dags-path ./dags \
-    local-cc-dev
-    ```
+        ```bash
+        composer-dev create \
+        --from-image-version composer-3-airflow-2.10.5-build.9 \
+        --dags-path ./dags \
+        local-cc-dev
+        ```
 
 5.  **Start the Container:**
 
     - Start the local Composer container:
 
-    ```bash
-    composer-dev start local-cc-dev
-    ```
+        ```bash
+        composer-dev start local-cc-dev
+        ```
 
     - Verify the Docker container is [running](https://docs.docker.com/reference/cli/docker/container/ls/):
 
-    ```bash
-    docker ps
-    ```
+        ```bash
+        docker ps
+        ```
 
 6.  **Access the Airflow UI:**
 
@@ -166,28 +188,28 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
 
     - Activate the `test_env` Python virtual environment:
 
-    ```bash
-    pyenv activate test_env
-    ```
+        ```bash
+        pyenv activate test_env
+        ```
 
     - Install libsqlite3-dev. This is a known build problem with Pyenv outlined [here](https://github.com/pyenv/pyenv/wiki/Common-build-problems). The problem is documented in issue #678 found [here](https://github.com/pyenv/pyenv/issues/678).
 
-    ```bash
-    sudo apt install libsqlite3-dev
-    ```
+        ```bash
+        sudo apt install libsqlite3-dev
+        ```
 
     - Install the requirements and test requirements files using [-r flags](https://pip.pypa.io/en/stable/user_guide/#requirements-files):
 
-    ```bash
-    pip install -r composer/local-cc-dev/requirements.txt
-    pip install -r tests/requirements-test.txt
-    ```
+        ```bash
+        pip install -r composer/local-cc-dev/requirements.txt
+        pip install -r tests/requirements-test.txt
+        ```
 
     - Run the tests cases with [verbose flag enabled](https://docs.pytest.org/en/stable/reference/reference.html#command-line-flags):
 
-    ```bash
-    pytest -v
-    ```
+        ```bash
+        pytest -v
+        ```
 
 9.  **CI/CD with Git Actions:**
 
