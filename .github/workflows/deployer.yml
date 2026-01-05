@@ -11,23 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: "actions/checkout@v4"
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.11.10
-          architecture: x64
 
-      - name: Install test dependencies
-        run: pip install -r tests/requirements-test.txt
-
-      - name: Install dependencies
-        run: pip install -r composer/local-cc-dev/requirements.txt
-
-      - name: Init airflow db
-        run: airflow db init
-
-      - name: Test DAG integrity
-        run: pytest
+      - name: Run Unit Tests via Docker
+        run: docker compose -f compose.yaml run --rm --build airflow-test
 
   deployment:
     needs: unit_test

@@ -20,6 +20,7 @@ with DAG(
     )
 
     python_task
+    # print("task missing!")
 
 if __name__ == "__main__":
     dag.cli()
