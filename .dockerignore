@@ -1,0 +1,4 @@
+.git
+.env
+composer
+!composer/local-cc-dev/requirements.txt

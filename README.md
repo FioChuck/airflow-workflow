@@ -138,6 +138,7 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
 
         ```bash
         pip install .
+        rm -rf composer-local-dev
         ```
 
 4.  **Create a Local Composer Environment:**
@@ -185,6 +186,8 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
       - **bq_ctas:** Executes a BigQuery query to create or replace a table named googl*daily_bar with aggregated daily market data for Google *(GOOGL)\_ including symbol, date, and closing price.
 
 8.  **Unit Testing:**
+    
+    **Isolation w/ pyenv virtualenvs**
 
     - Activate the `test_env` Python virtual environment:
 
@@ -196,6 +199,7 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
 
         ```bash
         sudo apt install libsqlite3-dev
+        airflow db migrate
         ```
 
     - Install the requirements and test requirements files using [-r flags](https://pip.pypa.io/en/stable/user_guide/#requirements-files):
@@ -208,8 +212,20 @@ This demo addresses these challenges by leveraging Cloud Workstations, the `comp
     - Run the tests cases with [verbose flag enabled](https://docs.pytest.org/en/stable/reference/reference.html#command-line-flags):
 
         ```bash
-        pytest -v
+        pytest tests/ -v
         ```
+    **Isolation w/ Docker**
+
+    TODO: https://code.visualstudio.com/docs/containers/debug-common#_python
+
+    - In the previous sections we used Python virtual environments to isolate dependencies and Python versions. Docker is another common alternative for running [Pytest](https://docs.pytest.org/en/stable/).
+    - This method requires building the included Docker file and running the container.
+
+    ```bash
+    docker compose -f compose.yaml up --build
+    docker compose -f compose.yaml run --rm airflow-test
+    ```
+
 
 9.  **CI/CD with Git Actions:**
 
