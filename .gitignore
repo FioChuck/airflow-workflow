@@ -1,0 +1,15 @@
+/composer/local-cc-dev/*
+!/composer/local-cc-dev/requirements.txt
+.pytest_cache
+**/__pycache__/
+.python-version
+identity-federation.sh
+
+composer-local-dev
+/idea/*
+config
+serverless_demo.py
+node_modules
+.antigravity
+setup.sh
+.antigravitycli

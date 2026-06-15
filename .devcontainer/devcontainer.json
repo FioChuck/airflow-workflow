@@ -1,0 +1,42 @@
+{
+    "name": "Airflow Workflow Dev Container",
+    "build": {
+        "dockerfile": "../Dockerfile",
+        "context": ".."
+    },
+    "workspaceFolder": "/app",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind",
+    "containerEnv": {
+        "PYTHONUNBUFFERED": "1",
+        "PYTHONPATH": "/app",
+        "AIRFLOW__CORE__LOAD_EXAMPLES": "False",
+        "AIRFLOW_HOME": "/home/airflow",
+        "AIRFLOW__CORE__DAGS_FOLDER": "/app/dags"
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "python.defaultInterpreterPath": "/usr/local/bin/python",
+                "python.testing.pytestEnabled": true,
+                "python.testing.pytestArgs": [
+                    "tests"
+                ],
+                "python.analysis.extraPaths": [
+                    "/app",
+                    "/app/dags"
+                ],
+                "python.analysis.languageServer": "Pylance"
+            },
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance"
+            ]
+        }
+    },
+    "forwardPorts": [
+        8080
+    ],
+    "postCreateCommand": "airflow db migrate",
+    "remoteUser": "airflow",
+    "updateRemoteUserUID": true
+}

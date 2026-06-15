@@ -1,0 +1,15 @@
+services:
+  airflow-test:
+    image: pytest-app:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    ports:
+      - "5678:5678"
+    # user: root
