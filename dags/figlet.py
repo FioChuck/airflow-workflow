@@ -24,10 +24,12 @@ with DAG(
     start_date=datetime(2024, 1, 1),
     tags=["gcp demo"],
 ) as dag:
-
     texts = generate_text_list()
 
     python_task = generate_figlet_text.expand(text=texts)
 
+    print("done")
+
 if __name__ == "__main__":
-    dag.cli()
+    dag.test()
+    # dag.cli()

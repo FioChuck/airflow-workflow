@@ -20,7 +20,6 @@ default_args = {
 with models.DAG(
     dag_id="dataproc_serverless", default_args=default_args, schedule=None
 ) as dag:
-
     with TaskGroup("example_taskgroup", tooltip="task group #1") as section_1:
         create_batch_1 = DataprocCreateBatchOperator(
             task_id="query_1",
