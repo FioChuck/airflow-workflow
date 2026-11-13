@@ -13,3 +13,5 @@ node_modules
 .antigravity
 setup.sh
 .antigravitycli
+
+*.vsix

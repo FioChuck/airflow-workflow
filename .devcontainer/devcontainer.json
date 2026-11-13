@@ -6,16 +6,26 @@
     },
     "workspaceFolder": "/app",
     "workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind",
+    "mounts": [
+        "source=${localEnv:HOME}/.config/gcloud,target=/home/airflow/.config/gcloud,type=bind,consistency=cached",
+        "source=${localEnv:HOME}/.antigravitycli,target=/home/airflow/.antigravitycli,type=bind,consistency=cached",
+        "source=${localEnv:HOME}/.gemini,target=/home/airflow/.gemini,type=bind,consistency=cached"
+    ],
     "containerEnv": {
         "PYTHONUNBUFFERED": "1",
         "PYTHONPATH": "/app",
         "AIRFLOW__CORE__LOAD_EXAMPLES": "False",
         "AIRFLOW_HOME": "/home/airflow",
-        "AIRFLOW__CORE__DAGS_FOLDER": "/app/dags"
+        "AIRFLOW__CORE__DAGS_FOLDER": "/app/dags",
+        "GOOGLE_APPLICATION_CREDENTIALS": "/home/airflow/.config/gcloud/application_default_credentials.json",
+        "AIRFLOW_CONN_GOOGLE_CLOUD_DEFAULT": "google-cloud-platform://",
+        "AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_USERS": "admin:admin,chasf:admin",
+        "SHELL": "/bin/bash"
     },
     "customizations": {
         "vscode": {
             "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash",
                 "python.defaultInterpreterPath": "/usr/local/bin/python",
                 "python.testing.pytestEnabled": true,
                 "python.testing.pytestArgs": [
@@ -25,18 +35,28 @@
                     "/app",
                     "/app/dags"
                 ],
-                "python.analysis.languageServer": "Pylance"
+                "python.analysis.languageServer": "Pylance",
+                "[python]": {
+                    "editor.defaultFormatter": "charliermarsh.ruff",
+                    "editor.formatOnSave": true,
+                    "editor.codeActionsOnSave": {
+                        "source.fixAll": "explicit",
+                        "source.organizeImports": "explicit"
+                    }
+                }
             },
             "extensions": [
                 "ms-python.python",
-                "ms-python.vscode-pylance"
+                "ms-python.vscode-pylance",
+                "charliermarsh.ruff",
+                "Google.google-antigravity"
             ]
         }
     },
     "forwardPorts": [
         8080
     ],
-    "postCreateCommand": "airflow db migrate",
+    "postStartCommand": "/app/setup.sh",
     "remoteUser": "airflow",
     "updateRemoteUserUID": true
 }

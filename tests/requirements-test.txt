@@ -1,3 +1,4 @@
 pytest
 apache-airflow-providers-google
 debugpy
+ruff

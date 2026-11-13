@@ -1,3 +1,0 @@
-[tool.pyrefly]
-python-version = "3.11"
-python-interpreter-path = "/home/user/.pyenv/versions/composer_env/bin/python"
